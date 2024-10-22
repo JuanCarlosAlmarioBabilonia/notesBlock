@@ -4,9 +4,9 @@ export const getAllNotas = async (req, res) => {
   try {
     const notas = await Nota.find(); 
     res.status(200).json({ message: "Lista de notas obtenidas", data: notas });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Error al obtener notas' });
+  } catch (error) {
+    let err = JSON.parse(error.message);
+    return res.status(err.status).json(err);
   }
 };
 
