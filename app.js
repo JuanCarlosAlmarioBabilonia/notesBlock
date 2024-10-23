@@ -8,7 +8,6 @@ import { jsonParseErrorHandler } from './server/middleware/errorHandler.js';
 import Database from "./server/database/connect.js";
 import versionUser from "./server/routes/userRouter.js";
 import versionNota from "./server/routes/notaRouter.js";
-import versionHistorial from "./server/routes/historialRouter.js"
 import cors from 'cors';
 
 
@@ -26,12 +25,7 @@ app.use(express.json());
 app.use(jsonParseErrorHandler);
 
 app.use("/user", versionUser)
-app.use("/nota", versionNota)
-app.use("/historial", versionHistorial)
-
-app.post("/", (req, res) => {
-    res.status(200).json(req.body);
-});
+app.use("/notes", versionNota)
 
 const privateKey = fs.readFileSync(path.resolve(__dirname, './private.key'));
 const certificate = fs.readFileSync(path.resolve(__dirname, './certificate.crt'));
