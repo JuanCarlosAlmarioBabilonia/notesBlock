@@ -1,31 +1,32 @@
 @import url(variables.css);
 
-body{
+body {
   background-color: #252525;
-  padding:1.5vh
+  padding: 1.5vh;
 }
 
 .app {
   display: flex;
   flex-direction: column;
   height: 95vh; 
+  position: relative; /* Cambiar a relativo para permitir posicionamiento absoluto en elementos hijos */
 }
 
 .notes_list {
   flex: 1; 
   display: flex;
   flex-direction: column;
+  padding-bottom: 60px; /* Espacio para el botón "+" */
 }
 
 .plus {
-  display: flex;
-  justify-content: flex-end; 
-  align-items: center; 
-  margin-bottom: 2vh; 
+  position: fixed; 
+  bottom: 20px; 
+  right: 20px; 
+  z-index: 10; 
 }
 
-
-.header{
+.header {
   display: flex;
   flex-direction: row;
   margin-top: 5vh;
@@ -36,27 +37,27 @@ body{
   flex-direction: row;
   justify-content: flex-end;
   width: 100%; 
-  gap:2.5vh;
+  gap: 2.5vh;
 }
 
-.imgs img{
-  width:52px;
-  height:52px;
+.imgs img {
+  width: 52px;
+  height: 52px;
 }
 
-.text{
+.text {
   margin-top: -5vh;
   font-family: "NunitoSemiBold";
   font-size: 23px;
   color: #FFFFFF;
 }
 
-.empty_state img{
+.empty_state img {
   margin-left: 1vh;
   margin-top: 11vh;
 }
 
-.empty_text{
+.empty_text {
   font-family: "NunitoLight";
   color: #FFFFFF;
   text-align: center;
@@ -64,11 +65,11 @@ body{
   margin-top: 0.5vh;
 }
 
-.note_title{
+.note_title {
   font-family: "NunitoRegular";
 }
 
-.notesView{
+.notesView {
   margin-bottom: 2vh;
   margin-top: 1vh;
   padding-left: 6vh;

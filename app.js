@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { jsonParseErrorHandler } from './server/middleware/errorHandler.js';
 import Database from "./server/database/connect.js";
-import versionUser from "./server/routes/userRouter.js";
+// import versionUser from "./server/routes/userRouter.js";
 import versionNota from "./server/routes/notaRouter.js";
 import cors from 'cors';
 
@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.json());
 app.use(jsonParseErrorHandler);
 
-app.use("/user", versionUser)
+// app.use("/user", versionUser)
 app.use("/notes", versionNota)
 
 const privateKey = fs.readFileSync(path.resolve(__dirname, './private.key'));
