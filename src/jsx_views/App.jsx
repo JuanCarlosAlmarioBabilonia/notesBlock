@@ -7,6 +7,7 @@ import plus from "../assets/imgs/plus.svg";
 
 export default function NotesApp() {
   const [notas, setNotas] = useState([]);
+  const idUsuario = '6716eb219bd23fa3b04f9469'; 
 
   const pastelColors = [
     '#FD99FF', 
@@ -20,7 +21,7 @@ export default function NotesApp() {
   useEffect(() => {
     const fetchNotas = async () => {
       try {
-        const response = await fetch('https://localhost:3000/notes', {
+        const response = await fetch(`https://localhost:3000/notes/${idUsuario}`, {
           headers: {
             'x-version': '1.0.0',
           },
@@ -31,17 +32,19 @@ export default function NotesApp() {
         }
     
         const data = await response.json();
-        const notasVisibles = data.data?.filter(nota => nota.estado === "Visible") || [];
         
-        setNotas(notasVisibles);
+        if (Array.isArray(data.data)) {
+          setNotas(data.data); 
+        } else {
+          console.error('Formato inesperado en la respuesta de la API:', data);
+        }
       } catch (error) {
         console.error('Error fetching notas:', error);
       }
     };
   
     fetchNotas();
-  }, []);
-  
+  }, [idUsuario]); 
 
   return (
     <div className='app'>
@@ -61,7 +64,7 @@ export default function NotesApp() {
             <div
               key={nota._id}
               className="notesView"
-              style={{ backgroundColor: pastelColors[index % pastelColors.length] }} // Asignar color de fondo
+              style={{ backgroundColor: pastelColors[index % pastelColors.length] }} 
             >
               <h2 className="note_title">{nota.titulo}</h2>
             </div>

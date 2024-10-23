@@ -1,16 +1,16 @@
 import express from 'express';
 const nota = express.Router({ mergeParams: true });
 import version from "../middleware/versionate.js";
-import { getAllNotas, getNotaById, getNotaByTitulo, createNota, deleteNota, updateNota } from '../controllers/notaController.js';
+import { getAllNotas, getNotaById, getNotaByTituloOrDescripcion, createNota, deleteNota, updateNota } from '../controllers/notaController.js';
 
 
 /**
  * GET 
  * ! Version 1.0.0
  */
-nota.get('/', version("1.0.0"), getAllNotas);
+nota.get('/:id_usuario', version("1.0.0"), getAllNotas);
 nota.get('/:id', version("1.0.0"), getNotaById);
-nota.get('/search/:titulo', version("1.0.0"), getNotaByTitulo); 
+nota.get('/search/:busqueda', version("1.0.0"), getNotaByTituloOrDescripcion); 
 
 /**
  * POST

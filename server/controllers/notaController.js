@@ -1,13 +1,74 @@
 import Nota from '../models/notaModel.js'; 
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Types.ObjectId;
 
 export const getAllNotas = async (req, res) => {
   try {
-    const notas = await Nota.find(); 
+    const { id_usuario } = req.params; // Obtener el ID del usuario desde los parámetros de la solicitud
+
+    if (!id_usuario) {
+      return res.status(400).json({ message: "El ID del usuario es requerido" });
+    }
+
+    const notas = await Nota.aggregate([
+      {
+        $match: {
+          estado: "Visible",
+          id_usuario: new ObjectId(id_usuario) // Usar el ID de usuario
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          result: {
+            $cond: {
+              if: { $gte: [{ $size: "$cambios" }, 1] }, 
+              then: { $mergeObjects: ["$$ROOT", { $arrayElemAt: ["$cambios", -1] }] }, 
+              else: "$$ROOT" 
+            }
+          }
+        }
+      },
+      {
+        $replaceRoot: { newRoot: "$result" } 
+      },
+      {
+        $project: {
+          cambios: 0,
+          id_usuario:0,
+          estado:0,
+          contenido:0, 
+        }
+      },
+      {
+        $addFields: {
+          date: {
+            $cond: {
+              if: { $not: ["$fecha"] }, 
+              then: {
+                $dateToString: {
+                  format: "%d/%m/%Y", 
+                  date: { $toDate: "$_id" } 
+                }
+              },
+              else: "$fecha" 
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          date: 0 
+        }
+      }
+    ]); 
+    
     res.status(200).json({ message: "Lista de notas obtenidas", data: notas });
   } catch (error) {
     res.status(500).json({ message: "Error al obtener notas", error: error.message });
   }
 };
+
 
 export const getNotaById = async (req, res) => {
   try {
@@ -21,34 +82,53 @@ export const getNotaById = async (req, res) => {
   }
 };
 
-export const getNotaByTitulo = async (req, res) => {
+export const getNotaByTituloOrDescripcion = async (req, res) => {
   try {
-    const { titulo } = req.params; 
-    if (!titulo) {
-      return res.status(400).json({ message: "Título es requerido para la búsqueda" });
+    const { busqueda } = req.params;
+    if (!busqueda) {
+      return res.status(400).json({ message: "El término de búsqueda es requerido" });
     }
 
-    const normalizedSearchTitle = removeAccents(titulo.toLowerCase());
+    const normalizedSearchTerm = removeAccents(busqueda.toLowerCase().trim());
+    console.log(`Término de búsqueda normalizado: ${normalizedSearchTerm}`);
 
     const notas = await Nota.find();
+    console.log(`Notas en la base de datos: ${JSON.stringify(notas)}`); // Imprimir todas las notas
 
-    const filteredNotas = notas.filter(nota => 
-      removeAccents(nota.titulo.toLowerCase()).includes(normalizedSearchTitle)
-    );
+    const filteredNotas = notas.filter(nota => {
+      const titulo = nota.titulo ? removeAccents(nota.titulo.toLowerCase().trim()) : '';
+      const descripcion = nota.descripcion ? removeAccents(nota.descripcion.toLowerCase().trim()) : '';
+      
+      // Buscar en los cambios
+      const cambiosContienenTermino = nota.cambios && nota.cambios.some(cambio => {
+        const cambioTitulo = cambio.titulo ? removeAccents(cambio.titulo.toLowerCase().trim()) : '';
+        const cambioDescripcion = cambio.descripcion ? removeAccents(cambio.descripcion.toLowerCase().trim()) : '';
+        return cambioTitulo.includes(normalizedSearchTerm) || cambioDescripcion.includes(normalizedSearchTerm);
+      });
+
+      console.log(`Buscando en - Título: ${titulo}, Descripción: ${descripcion}, Cambios contienen término: ${cambiosContienenTermino}`);
+
+      return titulo.includes(normalizedSearchTerm) || descripcion.includes(normalizedSearchTerm) || cambiosContienenTermino;
+    });
 
     if (filteredNotas.length === 0) {
-      return res.status(404).json({ message: "No se encontraron notas con ese título" });
+      return res.status(404).json({ message: "No se encontraron notas con ese término" });
     }
-    
+
     res.status(200).json({ message: "Notas encontradas", data: filteredNotas });
   } catch (error) {
-    res.status(500).json({ message: "Error al buscar la nota", error: error.message });
+    res.status(500).json({ message: "Error al buscar las notas", error: error.message });
   }
 };
 
 function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
+
+
+
+
+
 
 export const createNota = async (req, res) => {
   const { id_usuario, titulo, contenido, cambios, estado } = req.body;
