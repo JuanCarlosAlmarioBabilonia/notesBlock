@@ -6,8 +6,9 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { jsonParseErrorHandler } from './server/middleware/errorHandler.js';
 import Database from "./server/database/connect.js";
-// import versionUser from "./server/routes/userRouter.js";
 import versionNota from "./server/routes/notaRouter.js";
+import versionUser from "./server/routes/userRouter.js";
+import sessionMiddleware from "./server/middleware/sessionConfig.js"
 import cors from 'cors';
 
 
@@ -19,13 +20,23 @@ dotenv.config();
 const db = Database.getInstance();
 
 const app = express();
-app.use(cors()); 
+
+const corsOptions = {
+    origin: ['http://localhost:3000', 'https://localhost:5000'], // Permite ambos orígenes
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+};
+
+
+app.use(cors(corsOptions)); 
 
 app.use(express.json());
+app.use(sessionMiddleware)
 app.use(jsonParseErrorHandler);
 
-// app.use("/user", versionUser)
+
 app.use("/notes", versionNota)
+app.use("/users", versionUser)
 
 const privateKey = fs.readFileSync(path.resolve(__dirname, './private.key'));
 const certificate = fs.readFileSync(path.resolve(__dirname, './certificate.crt'));

@@ -1,0 +1,113 @@
+.login-register-page {
+    background-color: #252525;
+    padding: 1.5vh;
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-register-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-register-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: "NunitoSemiBold", sans-serif;
+}
+
+.login-register-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-register-container .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.login-register-container label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    font-family: "NunitoRegular", sans-serif;
+}
+
+.login-register-container input {
+    padding: 12px;
+    width: 90%;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.login-register-container input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.login-register-container .submit-button {
+    padding: 12px 20px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    font-family: "NunitoSemiBold", sans-serif;
+}
+
+.login-register-container .submit-button:hover {
+    background-color: #0056b3;
+}
+
+.login-register-container .submit-button:active {
+    transform: translateY(1px);
+}
+
+.login-register-container .error-message {
+    background-color: #ffebee;
+    color: #d32f2f;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-register-container .toggle-mode {
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: "NunitoRegular", sans-serif;
+}
+
+.login-register-container .toggle-mode:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .login-register-container {
+        padding: 25px;
+    }
+
+    .login-register-container input,
+    .login-register-container .submit-button {
+        font-size: 14px;
+    }
+}

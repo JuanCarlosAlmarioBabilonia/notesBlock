@@ -12,17 +12,22 @@
     "server": "concurrently \"npm run start\" \"npm run dev\""
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-redis": "^7.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.1",
     "express-validator": "^7.2.0",
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.453.0",
     "mongoose": "^8.7.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0",
     "semver": "^7.6.3"
   },
   "devDependencies": {

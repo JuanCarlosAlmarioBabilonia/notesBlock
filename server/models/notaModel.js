@@ -30,7 +30,7 @@ const NotaSchema = new Schema({
     required: true,
     trim: true
   },
-  contenido: {
+  descripcion: {
     type: String,
     required: true,
     trim: true
