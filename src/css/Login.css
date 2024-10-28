@@ -7,6 +7,10 @@
     align-items: center;
 }
 
+.nunito-font {
+    font-family: "NunitoSemiBold", sans-serif;
+}
+
 .login-register-container {
     background-color: #ffffff;
     border-radius: 8px;

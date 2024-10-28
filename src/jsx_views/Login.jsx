@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 import '../css/Login.css';
 
 export default function LoginRegister({ onLogin }) {
@@ -43,25 +44,63 @@ export default function LoginRegister({ onLogin }) {
                 if (onLogin) {
                     onLogin(tokenWithBearer, data._id);
                 }
-                
-                navigate('/notes');
+
+                // Muestra un mensaje de éxito utilizando SweetAlert2
+                Swal.fire({
+                    icon: 'success',
+                    customClass: {
+                        popup: 'nunito-font'  // Esto aplicará la fuente personalizada
+                    },
+                    title: isLogin ? 'Inicio de sesión exitoso' : 'Registro exitoso',
+                    text: isLogin ? '¡Bienvenido de nuevo!' : '¡Tu cuenta ha sido creada!',
+                    confirmButtonText: 'Continuar'
+                }).then(() => {
+                    navigate('/notes'); // Navega a la página de notas después de cerrar el alert
+                });
             } else {
-                setError(data.message || (isLogin ? 'Error en el inicio de sesión' : 'Error en el registro'));
+                // Mostrar mensaje de error en caso de fallo
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    customClass: {
+                        popup: 'nunito-font'  // Esto aplicará la fuente personalizada
+                    },
+                    text: data.message || (isLogin ? 'Error en el inicio de sesión' : 'Error en el registro'),
+                });
             }
         } catch (error) {
-            setError('Error de conexión');
+            // Error de conexión
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de conexión',
+                text: 'No se pudo conectar con el servidor.',
+                customClass: {
+                    popup: 'nunito-font'  // Esto aplicará la fuente personalizada
+                }
+            });
         }
     };
 
     const toggleMode = () => {
         setIsLogin(!isLogin);
         setError('');
-        // Limpiar los campos al cambiar de modo
         setUsername('');
         setPassword('');
         setEmail('');
         setNombre('');
         setApellido('');
+
+        // Muestra mensaje de modo cambiado
+        Swal.fire({
+            icon: 'info',
+            customClass: {
+                popup: 'nunito-font'  // Esto aplicará la fuente personalizada
+            },
+            title: isLogin ? 'Modo de Registro' : 'Modo de Inicio de Sesión',
+            text: isLogin 
+                ? 'Ahora estás en el modo de registro para crear una cuenta.' 
+                : 'Ahora estás en el modo de inicio de sesión para acceder.',
+        });
     };
 
     return (

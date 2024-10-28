@@ -17,6 +17,8 @@ body {
   flex: 1; 
   display: flex;
   flex-direction: column;
+  position: relative; /* Esto permite que los elementos hijos posicionados absolutamente se alineen con este contenedor */
+  z-index: 1; /* Asegura que el contenido de la lista esté debajo del recuadro */
   padding-bottom: 60px; /* Espacio para el botón "+" */
 }
 
@@ -66,6 +68,125 @@ body {
   margin-top: 0.5vh;
 }
 
+.logout-button {
+  background-color: #ff4d4d; /* Color rojo */
+  width: 55px;
+  height: 52px;
+  font-family: "NunitoSemiBold";
+  color: white; /* Texto blanco */
+  border: none; /* Sin borde */
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 10px 15px; /* Espaciado interno */
+  cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+  font-size: 13px; /* Tamaño de fuente */
+  transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+/* Clase para la capa de desenfoque */
+.blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(107, 107, 107, 0.5); /* Fondo oscuro semi-transparente */
+  backdrop-filter: blur(0.5px); /* Desenfoque de fondo */
+  z-index: 999; /* Debe estar por encima del contenido */
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+  backdrop-filter: blur(10px); /* Efecto de desenfoque */
+  z-index: 999; /* Asegúrate de que esté debajo del contenido */
+}
+
+/* Clase para el recuadro */
+.hola {
+  position: absolute; /* Se superpone al fondo */
+  top: 50%; /* Centra verticalmente */
+  left: 50%; /* Centra horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste para centrar perfectamente */
+  background-color: #252525; /* Fondo blanco para el recuadro */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  max-width: 400px; /* Ancho máximo del recuadro */
+  width: 90%; /* Ancho responsivo */
+  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  font-family: "NunitoRegular";
+  color: #F5F5F5
+}
+
+.modal-content {
+  background-color: white; /* Fondo blanco para el modal */
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px; /* Puedes ajustar el ancho */
+  margin: auto;
+  position: relative;
+  z-index: 1001; /* Asegúrate de que el contenido esté por encima del fondo desenfocado */
+}
+
+.empty-state-content {
+    padding:1rem
+}
+
+.credits {
+  margin: 10px 0; /* Espaciado vertical */
+}
+
+.made-by{
+  text-align: center;
+  font-family: "NunitoRegular";
+  color: #F5F5F5
+}
+
+.create-note {
+  margin-top: 20px; /* Espaciado superior */
+  font-weight: bold; /* Texto en negrita */
+  color: #333; /* Color del texto */
+}
+
+.add-button {
+  position: absolute; /* Posiciona el botón de añadir dentro del recuadro */
+  bottom: 10px; /* Distancia desde la parte inferior */
+  right: 10px; /* Distancia desde la parte derecha */
+  background-color: #007bff; /* Color de fondo del botón */
+  color: white; /* Color del texto del botón */
+  border: none; /* Sin borde */
+  border-radius: 50%; /* Botón redondo */
+  width: 40px; /* Ancho del botón */
+  height: 40px; /* Alto del botón */
+  display: flex; /* Usar flexbox para centrar el contenido */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  cursor: pointer; /* Cursor de mano al pasar por encima */
+  transition: background-color 0.3s; /* Transición suave al cambiar de color */
+}
+
+.add-button:hover {
+  background-color: #0056b3; /* Color del botón al pasar el ratón */
+}
+
+
+
+.logout-button:hover {
+  background-color: #ff1a1a; /* Color más oscuro al pasar el mouse */
+}
+
+.logout-button:focus {
+  outline: none; /* Sin contorno al enfocar */
+}
+
 .note_title {
   font-family: "NunitoRegular";
 }
@@ -76,4 +197,49 @@ body {
   padding-left: 6vh;
   padding-right: 6vh;
   border-radius: 10px;
+}
+
+/* Estilos para la barra de búsqueda */
+.search-menu {
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  margin: 10px 0; /* Espaciado superior e inferior */
+  padding: 10px;
+  margin-bottom: 1rem;
+  background-color: #444444; /* Color de fondo de la barra de búsqueda */
+  border-radius: 2rem; /* Bordes redondeados */
+
+}
+
+.search-menu input {
+  flex-grow: 1; /* Permitir que el input crezca */
+  padding: 2px; /* Espaciado interno */
+  font-size: 1rem;
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  margin-right: 10px; /* Espaciado a la derecha */
+  background-color: #444444; /* Color de fondo del input */
+  color: #ffffff; /* Color del texto */
+  font-family: "NunitoRegular";
+  margin-left: 1rem;
+  font-size: 1.3rem;
+}
+
+.search-menu input::placeholder {
+  color: #9e9e9e; /* Color del placeholder */
+}
+
+.search-menu button {
+  padding: 10px 15px; /* Espaciado interno del botón */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  background-color: #26a3f7; /* Color de fondo del botón */
+  color: #ffffff; /* Color del texto del botón */
+  cursor: pointer; /* Cambiar cursor al pasar sobre el botón */
+  transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+}
+
+.search-menu button:hover {
+  background-color: #d88ce6; /* Color de fondo al pasar el mouse sobre el botón */
 }
