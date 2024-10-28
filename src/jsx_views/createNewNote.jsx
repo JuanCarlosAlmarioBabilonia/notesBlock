@@ -94,8 +94,8 @@ export default function NoteEditor2() {
         }
 
         try {
-            const response = await fetch(`https://localhost:3000/notes/${id}`, {
-                method: 'PUT',
+            const response = await fetch(`https://localhost:3000/notes`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'x-version': '1.0.0',

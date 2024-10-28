@@ -7,6 +7,7 @@ import h2 from '../assets/imgs/h2.svg';
 import plus from '../assets/imgs/plus.svg';
 import rafiki from "../assets/imgs/rafiki.svg";
 import cuate from "../assets/imgs/cuate.svg";
+import { LogOut } from 'lucide-react'; 
 
 export default function NotesApp({ userId, token }) {
     const [userNotas, setUserNotas] = useState([]);
@@ -166,7 +167,9 @@ export default function NotesApp({ userId, token }) {
                 <div className='imgs'>
                     <img src={h1} alt="H1" onClick={() => setShowSearchMenu(!showSearchMenu)} />
                     <img src={h2} alt="H2" onClick={() => setShowH2(true)} />
-                    <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
+                    <button onClick={handleLogout} className="logout-button">
+                    <LogOut />
+                    </button>
                 </div>
             </div>
 
@@ -219,7 +222,7 @@ export default function NotesApp({ userId, token }) {
     ) : ( // Si hay notas pero no hay resultados de búsqueda
         <div className="empty_state">
             <img src={cuate} />
-            <p className="empty_text">No se encontraron notas</p>
+            <p className="empty_text">File not found. Try searching again.</p>
         </div>
     )}
 </div>
