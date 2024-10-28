@@ -150,6 +150,12 @@ export const getNotaById = async (req, res) => {
 
 export const getNotaByTituloOrDescripcion = async (req, res) => {
   try {
+    const id_usuario = req.userId; // Obtener el ID del usuario desde el token o sesión
+
+    if (!id_usuario) {
+      return res.status(401).json({ message: "El usuario no está autenticado" });
+    }
+
     const { busqueda } = req.params;
     if (!busqueda) {
       return res.status(400).json({ message: "El término de búsqueda es requerido" });
@@ -158,30 +164,63 @@ export const getNotaByTituloOrDescripcion = async (req, res) => {
     const normalizedSearchTerm = removeAccents(busqueda.toLowerCase().trim());
     console.log(`Término de búsqueda normalizado: ${normalizedSearchTerm}`);
 
-    const notas = await Nota.find();
-    console.log(`Notas en la base de datos: ${JSON.stringify(notas)}`); // Imprimir todas las notas
+    const notas = await Nota.aggregate([
+      {
+        $match: {
+          estado: "Visible",
+          id_usuario: new ObjectId(id_usuario), // Filtra por el ID del usuario
+          $or: [
+            { titulo: { $regex: normalizedSearchTerm, $options: "i" } }, // Busca en el título
+            { descripcion: { $regex: normalizedSearchTerm, $options: "i" } } // Busca en la descripción
+          ]
+        }
+      },
+      {
+        $addFields: {
+          fecha: {
+            $cond: {
+              if: { $not: ["$fecha"] },
+              then: {
+                $dateToString: {
+                  format: "%d/%m/%Y",
+                  date: { $toDate: "$_id" }
+                }
+              },
+              else: "$fecha"
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          result: {
+            $cond: {
+              if: { $gte: [{ $size: "$cambios" }, 1] },
+              then: { $mergeObjects: ["$$ROOT", { $arrayElemAt: ["$cambios", -1] }] },
+              else: "$$ROOT"
+            }
+          }
+        }
+      },
+      {
+        $replaceRoot: { newRoot: "$result" }
+      },
+      {
+        $project: {
+          cambios: 0,
+          id_usuario: 0,
+          estado: 0,
+          contenido: 0
+        }
+      }
+    ]);
 
-    const filteredNotas = notas.filter(nota => {
-      const titulo = nota.titulo ? removeAccents(nota.titulo.toLowerCase().trim()) : '';
-      const descripcion = nota.descripcion ? removeAccents(nota.descripcion.toLowerCase().trim()) : '';
-      
-      // Buscar en los cambios
-      const cambiosContienenTermino = nota.cambios && nota.cambios.some(cambio => {
-        const cambioTitulo = cambio.titulo ? removeAccents(cambio.titulo.toLowerCase().trim()) : '';
-        const cambioDescripcion = cambio.descripcion ? removeAccents(cambio.descripcion.toLowerCase().trim()) : '';
-        return cambioTitulo.includes(normalizedSearchTerm) || cambioDescripcion.includes(normalizedSearchTerm);
-      });
-
-      console.log(`Buscando en - Título: ${titulo}, Descripción: ${descripcion}, Cambios contienen término: ${cambiosContienenTermino}`);
-
-      return titulo.includes(normalizedSearchTerm) || descripcion.includes(normalizedSearchTerm) || cambiosContienenTermino;
-    });
-
-    if (filteredNotas.length === 0) {
+    if (notas.length === 0) {
       return res.status(404).json({ message: "No se encontraron notas con ese término" });
     }
 
-    res.status(200).json({ message: "Notas encontradas", data: filteredNotas });
+    res.status(200).json({ message: "Notas encontradas", data: notas });
   } catch (error) {
     res.status(500).json({ message: "Error al buscar las notas", error: error.message });
   }
@@ -190,6 +229,7 @@ export const getNotaByTituloOrDescripcion = async (req, res) => {
 function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
+
 
 export const createNota = async (req, res) => {
   const id_usuario = req.userId; 

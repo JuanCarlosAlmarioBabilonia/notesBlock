@@ -11,7 +11,7 @@ import { schemaNotes } from "../validator/notesValidator.js"
  */
 nota.get('/', getAllNotasLimiter, authenticateToken, version("1.0.0"), getAllNotas);
 nota.get('/:id', getNotaByIdLimiter, authenticateToken, version("1.0.0"), getNotaById);
-nota.get('/search/:busqueda', getNotaByTituloOrDescripcionLimiter, version("1.0.0"), getNotaByTituloOrDescripcion); 
+nota.get('/search/:busqueda', getNotaByTituloOrDescripcionLimiter, authenticateToken, version("1.0.0"), getNotaByTituloOrDescripcion); 
 
 /**
  * POST
