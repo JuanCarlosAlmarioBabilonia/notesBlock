@@ -8,9 +8,9 @@ const SECRET_KEY = process.env.JWT_SECRET;
 export const sessionMiddleware = session({
     secret: SECRET_KEY,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: { 
-        secure: true, // Cambia manualmente si estás en producción
+        secure: false, // Cambia manualmente si estás en producción
         maxAge: 1800000 // 30 minutos
     }
 });

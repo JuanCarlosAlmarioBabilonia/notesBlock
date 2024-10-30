@@ -1,6 +1,6 @@
 import express from 'express';
-import https from 'https';
-import fs from 'fs';
+// import https from 'https';
+// import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -34,17 +34,23 @@ app.use(express.json());
 app.use(sessionMiddleware)
 app.use(jsonParseErrorHandler);
 
-
+app.get("/", (req, res) => {
+    res.send("NotesBlock API");
+})
 app.use("/notes", versionNota)
 app.use("/users", versionUser)
 
-const privateKey = fs.readFileSync(path.resolve(__dirname, './private.key'));
-const certificate = fs.readFileSync(path.resolve(__dirname, './certificate.crt'));
+// const privateKey = fs.readFileSync(path.resolve(__dirname, './private.key'));
+// const certificate = fs.readFileSync(path.resolve(__dirname, './certificate.crt'));
 
-const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app);
+// const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app);
 
 const port = process.env.EXPRESS_PORT || 3000;
 
-httpsServer.listen(port, () => {
-    console.log(`Servidor HTTPS escuchando en ${process.env.EXPRESS_PROTOCOL}${process.env.EXPRESS_HOST}:${port}`);
+// httpsServer.listen(port, () => {
+//     console.log(`Servidor HTTPS escuchando en ${process.env.EXPRESS_PROTOCOL}${process.env.EXPRESS_HOST}:${port}`);
+// });
+
+app.listen(port, () => {
+    console.log(`Servidor escuchando en http://${process.env.EXPRESS_HOST}:${port}`);
 });
