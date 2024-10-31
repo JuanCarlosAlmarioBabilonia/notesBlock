@@ -22,7 +22,7 @@ const db = Database.getInstance();
 const app = express();
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://localhost:5000', "https://notes-block.vercel.app/"], // Permite ambos orígenes
+    origin: ['http://localhost:3000', 'https://localhost:5000', "https://notes-block.vercel.app"], // Permite ambos orígenes
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 };
