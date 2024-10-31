@@ -30,7 +30,7 @@ export default function LoginRegister({ onLogin }) {
         e.preventDefault();
         setError('');
     
-        const url = isLogin ? 'http://localhost:3000/users/login' : 'http://localhost:3000/users';
+        const url = isLogin ? 'https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/users/login' : 'https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/users';
     
         try {
             const response = await fetch(url, {

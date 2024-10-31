@@ -31,7 +31,7 @@ export default function NotesApp({ userId, token }) {
             }
 
             try {
-                const response = await fetch('http://localhost:3000/notes', {
+                const response = await fetch('https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/notes', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function NotesApp({ userId, token }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:3000/users/logout', {
+            const response = await fetch('https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/users/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
