@@ -42,7 +42,7 @@ export default function NoteEditor2() {
         }
 
         try {
-            const response = await fetch(`https://localhost:3000/notes/${noteId}`, {
+            const response = await fetch(`http://localhost:3000/notes/${noteId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default function NoteEditor2() {
         }
 
         try {
-            const response = await fetch(`https://localhost:3000/notes`, {
+            const response = await fetch(`http://localhost:3000/notes`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ export default function NoteEditor2() {
             });
 
             if (result.isConfirmed) {
-                const response = await fetch(`https://localhost:3000/notes/${id}`, {
+                const response = await fetch(`http://localhost:3000/notes/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

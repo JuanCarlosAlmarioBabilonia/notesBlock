@@ -30,7 +30,7 @@ export default function LoginRegister({ onLogin }) {
         e.preventDefault();
         setError('');
     
-        const url = isLogin ? 'https://localhost:3000/users/login' : 'https://localhost:3000/users';
+        const url = isLogin ? 'http://localhost:3000/users/login' : 'http://localhost:3000/users';
     
         try {
             const response = await fetch(url, {
