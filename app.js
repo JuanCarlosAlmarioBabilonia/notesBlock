@@ -34,9 +34,15 @@ app.use(express.json());
 app.use(sessionMiddleware)
 app.use(jsonParseErrorHandler);
 
-app.get("/", (req, res) => {
-    res.send("NotesBlock API");
-})
+// Sirve los archivos de la carpeta 'build' en producción
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Ruta raíz para el frontend
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+
 app.use("/notes", versionNota)
 app.use("/users", versionUser)
 
