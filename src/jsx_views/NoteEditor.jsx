@@ -43,7 +43,7 @@ export default function NoteEditor2() {
         }
 
         try {
-            const response = await fetch(`https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/notes/${noteId}`, {
+            const response = await fetch(`https://notes-block.vercel.app/notes/${noteId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export default function NoteEditor2() {
         }
 
         try {
-            const response = await fetch(`https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/notes/${id}`, {
+            const response = await fetch(`https://notes-block.vercel.app/notes/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -200,7 +200,7 @@ export default function NoteEditor2() {
             });
 
             if (result.isConfirmed) {
-                const response = await fetch(`https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/notes/${id}`, {
+                const response = await fetch(`https://notes-block.vercel.app/notes/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

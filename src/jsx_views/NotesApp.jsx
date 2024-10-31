@@ -33,7 +33,7 @@ export default function NotesApp() {
             }
         
             try {
-                const response = await fetch('https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/notes', {
+                const response = await fetch('https://notes-block.vercel.app/notes', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export default function NotesApp() {
         }
 
         try {
-            const response = await fetch('https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/users/logout', {
+            const response = await fetch('https://notes-block.vercel.app/users/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
