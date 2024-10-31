@@ -38,7 +38,7 @@ export default function NotesApp() {
                     headers: {
                         'Content-Type': 'application/json',
                         'x-version': '1.0.0',
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': token,
                     },
                 });
         
