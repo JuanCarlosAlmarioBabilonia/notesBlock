@@ -38,11 +38,11 @@ export default function NotesApp() {
                     headers: {
                         'Content-Type': 'application/json',
                         'x-version': '1.0.0',
-                        'Authorization': token,
+                        'Authorization': token, // Se elimina 'Bearer '
                     },
                 });
-        
-                // Revisa el código de estado antes de intentar parsear
+
+                // Verifica el código de estado antes de intentar parsear
                 if (!response.ok) {
                     const errorData = await response.text(); // Obtén la respuesta como texto
                     console.error('Error response:', errorData);
@@ -97,7 +97,7 @@ export default function NotesApp() {
     }, [searchTerm, userNotas]);
 
     const handleLogout = async () => {
-        const token = localStorage.getItem('token'); // Obtener el token del local storage
+        const token = localStorage.getItem('token');
 
         if (!token) {
             navigate('/');
@@ -110,12 +110,12 @@ export default function NotesApp() {
                 headers: {
                     'Content-Type': 'application/json',
                     'x-version': '1.0.0',
-                    'Authorization': token,
+                    'Authorization': token, // Se elimina 'Bearer '
                 },
             });
 
             if (response.ok) {
-                localStorage.removeItem('token'); // Eliminar el token del local storage
+                localStorage.removeItem('token');
                 Swal.fire({
                     icon: 'success',
                     title: 'Sesión cerrada correctamente',
@@ -149,10 +149,6 @@ export default function NotesApp() {
                 }
             });
         }
-    };
-
-    const toggleEmptyState = () => {
-        setShowEmptyState(prevState => !prevState);
     };
 
     const handleBlurOverlayClick = () => {
