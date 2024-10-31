@@ -25,42 +25,35 @@ export default function NotesApp() {
 
     useEffect(() => {
         const fetchNotas = async () => {
-            const token = localStorage.getItem('token'); // Obtener el token del local storage
-
+            const token = localStorage.getItem('token');
+        
             if (!token) {
                 navigate('/'); 
                 return;
             }
-
+        
             try {
                 const response = await fetch('https://fa8b-2800-484-4788-c300-14d9-dd0a-5791-6eb.ngrok-free.app/notes', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                         'x-version': '1.0.0',
-                        'Authorization': token, // Incluye el token aquí con el prefijo Bearer
+                        'Authorization': `Bearer ${token}`,
                     },
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setUserNotas(data.data);
-                    setNotas(data.data);
-                } else {
-                    const errorData = await response.text(); // Obtener respuesta como texto
-                    console.error('Error response:', errorData); // Log para ver la respuesta
-                    setError('Error al cargar las notas: ' + errorData);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error al cargar las notas',
-                        text: errorData,
-                        confirmButtonText: 'Aceptar',
-                        customClass: {
-                            popup: 'nunito-font'
-                        }
-                    });
+        
+                // Revisa el código de estado antes de intentar parsear
+                if (!response.ok) {
+                    const errorData = await response.text(); // Obtén la respuesta como texto
+                    console.error('Error response:', errorData);
+                    throw new Error(`HTTP error! status: ${response.status}, response: ${errorData}`);
                 }
+        
+                const data = await response.json();
+                setUserNotas(data.data);
+                setNotas(data.data);
             } catch (error) {
+                console.error('Error de conexión:', error);
                 setError('Error al cargar las notas: ' + error.message);
                 Swal.fire({
                     icon: 'error',
