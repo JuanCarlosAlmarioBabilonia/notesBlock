@@ -47,12 +47,13 @@ export default function NotesApp() {
                     setUserNotas(data.data);
                     setNotas(data.data);
                 } else {
-                    const errorData = await response.json();
-                    setError('Error al cargar las notas: ' + errorData.message);
+                    const errorData = await response.text(); // Obtener respuesta como texto
+                    console.error('Error response:', errorData); // Log para ver la respuesta
+                    setError('Error al cargar las notas: ' + errorData);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error al cargar las notas',
-                        text: errorData.message,
+                        text: errorData,
                         confirmButtonText: 'Aceptar',
                         customClass: {
                             popup: 'nunito-font'
