@@ -34,12 +34,12 @@ app.use(express.json());
 app.use(sessionMiddleware)
 app.use(jsonParseErrorHandler);
 
-// Sirve los archivos de la carpeta 'build' en producción
-app.use(express.static(path.join(__dirname, 'build')));
+// Servir los archivos estáticos de la carpeta 'dist' en producción
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// Ruta raíz para el frontend
+// Redirigir todas las rutas desconocidas al index.html en la carpeta 'dist'
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 
